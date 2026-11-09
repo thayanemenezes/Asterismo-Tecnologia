@@ -1,25 +1,4 @@
-function BrandMark() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="brand-mark"
-      fill="none"
-      viewBox="0 0 42 42"
-    >
-      <path
-        d="M21 3.5v35M3.5 21h35M8.63 8.63l24.74 24.74m0-24.74L8.63 33.37"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-      />
-      <circle cx="21" cy="21" r="4.25" fill="currentColor" />
-      <circle cx="21" cy="3.5" r="2.25" fill="currentColor" />
-      <circle cx="38.5" cy="21" r="2.25" fill="currentColor" />
-      <circle cx="21" cy="38.5" r="2.25" fill="currentColor" />
-      <circle cx="3.5" cy="21" r="2.25" fill="currentColor" />
-    </svg>
-  );
-}
+import { useEffect, useState } from "react";
 
 const navigation = [
   { href: "#sobre", label: "Sobre" },
@@ -29,15 +8,45 @@ const navigation = [
 ] as const;
 
 export function SiteHeader() {
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 761px)");
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = Math.max(0, window.scrollY);
+
+      if (!desktopQuery.matches || currentScrollY < 80) {
+        setIsHidden(false);
+      } else if (currentScrollY > lastScrollY + 4) {
+        setIsHidden(true);
+      } else if (currentScrollY < lastScrollY - 4) {
+        setIsHidden(false);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    const handleBreakpointChange = () => {
+      lastScrollY = window.scrollY;
+      setIsHidden(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    desktopQuery.addEventListener("change", handleBreakpointChange);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      desktopQuery.removeEventListener("change", handleBreakpointChange);
+    };
+  }, []);
+
   return (
-    <header className="site-header">
+    <header className={`site-header${isHidden ? " site-header--hidden" : ""}`}>
       <div className="items">
       <a className="brand" href="#inicio" aria-label="Asterismo Tecnologia, início">
-        <BrandMark />
-        <span className="brand-wordmark">
-          <span>Asterismo</span>
-          <span className="brand-subtitle">Tecnologia</span>
-        </span>
+        <img src="/images/logo-asterismo.png" alt="Asterismo Tecnologia" width={180}  />
       </a>
       <nav aria-label="Navegação principal" className="primary-navigation">
         {navigation.map((item) => (
@@ -58,7 +67,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <a className="brand footer-brand" href="#inicio">
-        <BrandMark />
+        <img src="/images/logo-asterismo.png" alt="Asterismo Tecnologia" width={48} height={48} />
         <span className="brand-wordmark">
           <span>Asterismo</span>
           <span className="brand-subtitle">Tecnologia</span>

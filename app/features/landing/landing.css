@@ -286,10 +286,17 @@ textarea:focus-visible {
 .button-text {
   min-height: auto;
   color: #3d4760;
+   gap: 0.65rem;
+  padding: 0.78rem 1.05rem;
+  border: 1px solid #d9dce8;
 }
 
 .button-text span {
   color: #7781dc;
+}
+
+.button-text:hover {
+  color: #707bdd;
 }
 
 .hero-note {
@@ -329,37 +336,166 @@ textarea:focus-visible {
 }
 
 
-.hero-asterism {
+.tech-orbit-stage {
   position: relative;
   z-index: 1;
-  width: min(120%, 540px);
-  overflow: visible;
-  filter: drop-shadow(0 0 12px #a8b0ff73);
+  display: grid;
+  width: min(100%, 500px);
+  aspect-ratio: 1.15;
+  place-items: center;
 }
 
-.hero-asterism path {
-  stroke: #7c86e9;
+.tech-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 86%;
+  margin: auto;
+  border: 1px solid rgb(121 137 239 / 24%);
+  border-radius: 50%;
+  animation: tech-orbit-spin 12s linear infinite;
+}
+
+.tech-orbit--middle {
+  width: 78%;
+  height: 67%;
+  border-style: dashed;
+  animation-duration: 10s;
+  animation-direction: reverse;
+}
+
+.tech-orbit--inner {
+  width: 55%;
+  height: 48%;
+  border-color: rgb(121 137 239 / 32%);
+  animation-duration: 8s;
+}
+
+.tech-orbiter {
+  position: absolute;
+  top: -23px;
+  left: 50%;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  place-items: center;
+  animation: tech-orbiter-counter-spin 12s linear infinite;
+}
+
+.tech-orbit--middle .tech-orbiter {
+  animation-duration: 10s;
+  animation-direction: reverse;
+}
+
+.tech-orbit--inner .tech-orbiter {
+  animation-duration: 8s;
+}
+
+.tech-orbiter svg {
+  width: 23px;
+  height: 23px;
+  stroke: #6574d8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.5;
+  stroke-width: 1.7;
 }
 
-.hero-asterism circle {
-  fill: #e5e7ff;
-  stroke: #9ba5ff;
-  stroke-width: 1.5;
+.tech-orbit-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: clamp(88px, 22%, 112px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 85%);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #e8ebff);
+  box-shadow:
+    0 0 0 10px rgb(121 137 239 / 8%),
+    0 0 42px rgb(121 137 239 / 35%),
+    0 18px 42px rgb(48 58 110 / 14%);
 }
 
-.hero-asterism .asterism-core {
+.tech-orbit-core::before {
+  position: absolute;
+  inset: -18px;
+  border: 1px solid rgb(121 137 239 / 18%);
+  border-radius: 50%;
+  content: "";
+}
+
+.tech-orbit-core svg {
+  width: 62%;
+  overflow: visible;
+  filter: drop-shadow(0 0 5px rgb(121 137 239 / 35%));
+}
+
+.tech-orbit-core path {
+  stroke: #7885e7;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.tech-orbit-core circle {
   fill: #fff;
-  stroke: #fff;
-  filter: drop-shadow(0 0 7px #fff) drop-shadow(0 0 14px #9da7ff);
+  stroke: #7885e7;
+  stroke-width: 2;
 }
 
-.hero-asterism .asterism-star {
-  fill: #fff;
-  stroke: #fff;
-  filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #a4aeff);
+.tech-orbit-spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8995f5;
+  box-shadow: 0 0 12px 3px rgb(121 137 239 / 42%);
+  animation: tech-spark-pulse 1.8s ease-in-out infinite alternate;
+}
+
+.tech-orbit-spark--one {
+  top: 20%;
+  left: 19%;
+}
+
+.tech-orbit-spark--two {
+  right: 14%;
+  bottom: 28%;
+  width: 4px;
+  height: 4px;
+  animation-delay: 0.6s;
+}
+
+.tech-orbit-spark--three {
+  top: 27%;
+  right: 20%;
+  width: 3px;
+  height: 3px;
+  animation-delay: 1.1s;
+}
+
+@keyframes tech-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tech-orbiter-counter-spin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes tech-spark-pulse {
+  from {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.25);
+  }
 }
 
 .hero-scroll {
@@ -1170,5 +1306,11 @@ textarea:focus-visible {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .tech-orbit,
+  .tech-orbiter,
+  .tech-orbit-spark {
+    animation: none !important;
   }
 }
